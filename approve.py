@@ -145,12 +145,12 @@ def create_account(request):
     )
     # TODO: use ssl verification
     celery.conf.broker_use_ssl = {
-	'ssl_cert_reqs': ssl.CERT_NONE,
+        'ssl_cert_reqs': ssl.CERT_NONE,
     }
     # `redis_backend_use_ssl` is an OCF patch which was proposed upstream:
     # https://github.com/celery/celery/pull/3831
     celery.conf.redis_backend_use_ssl = {
-	'ssl_cert_reqs': ssl.CERT_NONE,
+        'ssl_cert_reqs': ssl.CERT_NONE,
     }
 
     # TODO: stop using pickle

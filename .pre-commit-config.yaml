@@ -1,5 +1,5 @@
 -   repo: https://github.com/pre-commit/pre-commit-hooks.git
-    sha: a1b0104f3d81b8323c9968649501d662301e04b8
+    sha: v0.7.1
     hooks:
     -   id: autopep8-wrapper
         language_version: python3
@@ -32,7 +32,7 @@
 #     -   id: pep257
 #         exclude: (^setup\.py|__init__\.py)$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks.git
-    sha: 43020827f28dfea6b2fd2bf4ddf27088fb06ad1b
+    sha: v1.0.1
     hooks:
     -   id: remove-tabs
         files: \.py$

@@ -8,24 +8,15 @@ except IOError:
     VERSION = 'unknown'
 
 setup(
-    name='create',
+    name='approve',
     version=VERSION,
-    packages=find_packages(),
-    include_package_data=True,
+    py_modules=['approve'],
     url='https://www.ocf.berkeley.edu/',
     author='Open Computing Facility',
     author_email='help@ocf.berkeley.edu',
-    install_requires=[
-        # TODO: stop using our fork
-        # https://github.com/celery/celery/pull/3831
-        'ckuehl-celery[redis]==4.0.2.post1',
-        'ocflib',
-        'pyyaml',
-    ],
     entry_points={
         'console_scripts': {
-            'create-worker = create.worker:main',
-            'approve = create.approve:main',
+            'approve = approve:main',
         },
     },
     classifiers=[

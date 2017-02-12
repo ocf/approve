@@ -2,61 +2,50 @@ node('slave') {
     step([$class: 'WsCleanup'])
 
     stage('check-out-code') {
-        checkout scm
+        dir('src') {
+            checkout scm
+        }
     }
 
-    stage('test') {
-        sh 'make test'
-    }
+	stage('test') {
+		dir('src') {
+			sh 'make test'
+		}
+	}
 
-    stash 'build'
+    stash 'src'
 }
 
 
-if (env.BRANCH_NAME == 'master') {
-    def version = new Date().format("yyyy-MM-dd-'T'HH-mm-ss")
-    withEnv([
-        "DOCKER_REVISION=${version}",
-    ]) {
-        node('slave') {
-            step([$class: 'WsCleanup'])
-            unstash 'build'
+def dists = ['jessie', 'stretch']
+for (def i = 0; i < dists.size(); i++) {
+    def dist = dists[i]
+    stage name: "build-${dist}"
 
-            stage('cook-prod-image') {
-                sh 'make cook-image'
-            }
-
-            stash 'build'
-        }
-
-        node('deploy') {
-            step([$class: 'WsCleanup'])
-            unstash 'build'
-
-            stage('push-to-registry') {
-                sh 'make push-image'
-            }
-
-            stage('deploy-to-prod') {
-                build job: 'marathon-deploy-app', parameters: [
-                    [$class: 'StringParameterValue', name: 'app', value: 'create'],
-                    [$class: 'StringParameterValue', name: 'version', value: version],
-                ]
-            }
-        }
-    }
-} else {
     node('slave') {
         step([$class: 'WsCleanup'])
-        unstash 'build'
+        unstash 'src'
 
-        stage('test-cook-image') {
-            sh 'make cook-image'
+        dir('src') {
+            sh 'make clean'
+            sh "make package_${dist}"
+            sh "mv dist dist_${dist}"
+            archiveArtifacts artifacts: "dist_${dist}/*"
         }
 
-        stash 'build'
+        stash 'src'
+    }
+
+    if (env.BRANCH_NAME == 'master') {
+        stage name: "upload-${dist}"
+
+        build job: 'upload-changes', parameters: [
+            [$class: 'StringParameterValue', name: 'path_to_changes', value: "dist_${dist}/*.changes"],
+            [$class: 'StringParameterValue', name: 'dist', value: dist],
+            [$class: 'StringParameterValue', name: 'job', value: env.JOB_NAME.replace('/', '/job/')],
+            [$class: 'StringParameterValue', name: 'job_build_number', value: env.BUILD_NUMBER],
+        ]
     }
 }
-
 
 // vim: ft=groovy

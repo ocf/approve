@@ -1,10 +1,9 @@
 #!/usr/bin/make -f
 %:
-	dh $@ --with python-virtualenv --with systemd
+	dh $@ --with python-virtualenv
 
 override_dh_virtualenv:
-	dh_virtualenv --python=/usr/bin/python3
+	dh_virtualenv --python=/usr/bin/python3 --extra-pip-arg='--no-use-wheel'
 
-override_dh_fixperms:
-	dh_fixperms
-	chmod 640 debian/ocf-create/etc/ocf-create/ocf-create.conf
+override_dh_auto_build:
+	@true

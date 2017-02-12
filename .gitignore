@@ -8,6 +8,7 @@
 build/
 debian/ocf-create
 debian/*.log
+debian/links
 debian/files
 debian/substvars
 debian/ocf-create.substvars

@@ -1,13 +1,13 @@
-Source: ocf-create
+Source: ocf-approve
 Section: python
 Priority: extra
 Maintainer: Open Computing Facility <help@ocf.berkeley.edu>
 Build-Depends: debhelper (>= 9), python3, python3-dev, dh-virtualenv, dh-systemd (>= 1.5),
- libcrack2-dev, git
+ libcrack2-dev, git, libffi-dev, libssl-dev
 Standards-Version: 3.9.6
 
-Package: ocf-create
+Package: ocf-approve
 Architecture: any
 Depends: ${python:Depends}, ${misc:Depends}, ${shlibs:Depends}, virtualenv |
  python-virtualenv, pwgen, systemd-sysv
-Description: Celery worker for OCF account creation
+Description: Script for creating group accounts.

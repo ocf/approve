@@ -1,27 +1,13 @@
-# create
+# approve
 [![Build Status](https://jenkins.ocf.berkeley.edu/buildStatus/icon?job=create-test)](https://jenkins.ocf.berkeley.edu/view/create-test/)
 
-Celery worker for account creation
+TODO: fix jenkins icons
+
+Script for creating group accounts.
 
 ## Development
 
 Clone the repo, and run `make venv` inside the repository directory. This will
-install the required python packages needed to run create.
+install the required python packages needed to run approve.
 
-The worker is run in production as a systemd service, but for development you
-probably want to just run them manually using the commands explained below. Be
-aware that if you start the celery worker but another is already running, you
-aren't guaranteed that tasks will land on your instance.
-
-To run the bot, first you must be on supernova, since the credentials are only
-accessible from there. Then, after installing the packages required, source the
-virtualenv (`source .activate.sh`) to enable the commands to use for running
-the celery worker. To automatically source and unsource the virtualenv when
-entering/leaving the directory, try using
-[aactivator](https://github.com/Yelp/aactivator).
-
-To start the celery worker, run `create-worker`. The celery worker will by
-default use the config file already on supernova, but you can specify your own
-config file to use for development with the `-c` or `--config` parameter to
-either one. More help is available with `-h` or `--help`. To exit the
-virtualenv when you are done working on create, just type `deactivate`.
+To run approve, first source the virtualenv and then run `python -m approve`.

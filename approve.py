@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+"""Create group accounts."""
+import ssl
 import sys
 import time
 from argparse import ArgumentParser
@@ -142,6 +143,21 @@ def create_account(request):
         broker=conf.get('celery', 'broker'),
         backend=conf.get('celery', 'backend'),
     )
+    # TODO: use ssl verification
+    celery.conf.broker_use_ssl = {
+	'ssl_cert_reqs': ssl.CERT_NONE,
+    }
+    # `redis_backend_use_ssl` is an OCF patch which was proposed upstream:
+    # https://github.com/celery/celery/pull/3831
+    celery.conf.redis_backend_use_ssl = {
+	'ssl_cert_reqs': ssl.CERT_NONE,
+    }
+
+    # TODO: stop using pickle
+    celery.conf.task_serializer = 'pickle'
+    celery.conf.result_serializer = 'pickle'
+    celery.conf.accept_content = {'pickle'}
+
     tasks = get_tasks(celery)
     task = tasks.validate_then_create_account.delay(request)
 
@@ -273,7 +289,3 @@ def main():
             # this shouldn't be possible; we must have entered some weird state
             error_report(request, new_request, response)
             pause_error_msg()
-
-
-if __name__ == '__main__':
-    main()

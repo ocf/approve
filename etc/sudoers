@@ -1,1 +1,0 @@
-nobody          ALL=(ALL) NOPASSWD: /usr/bin/install, /bin/ln, /usr/sbin/nscd

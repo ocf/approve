@@ -1,7 +1,5 @@
 # approve
-[![Build Status](https://jenkins.ocf.berkeley.edu/buildStatus/icon?job=create-test)](https://jenkins.ocf.berkeley.edu/view/create-test/)
-
-TODO: fix jenkins icons
+[![Build Status](https://jenkins.ocf.berkeley.edu/buildStatus/icon?job=approve/master)](https://jenkins.ocf.berkeley.edu/job/approve/job/master/)
 
 Script for creating group accounts.
 

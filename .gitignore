@@ -10,6 +10,7 @@ debian/ocf-create
 debian/*.log
 debian/links
 debian/files
+debian/rules
 debian/substvars
 debian/ocf-create.substvars
 debian/*.debhelper

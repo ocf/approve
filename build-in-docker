@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
-cp -r /mnt /work
+mkdir /work
+cp -r /mnt/. /work
 cd /work
 
 export DEBIAN_FRONTEND=noninteractive

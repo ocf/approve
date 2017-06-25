@@ -1,5 +1,5 @@
 -   repo: https://github.com/pre-commit/pre-commit-hooks.git
-    sha: v0.7.1
+    sha: v0.8.0
     hooks:
     -   id: autopep8-wrapper
         language_version: python3
@@ -22,15 +22,15 @@
     -   id: requirements-txt-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/asottile/reorder_python_imports.git
-    sha: 3d86483455ab5bd06cc1069fdd5ac57be5463f10
+    sha: v0.3.4
     hooks:
     -   id: reorder-python-imports
         language_version: python3
-# -   repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257.git
-#     sha: 67c970e89857fdcebcd59ace94950a3331985a3b
-#     hooks:
-#     -   id: pep257
-#         exclude: (^setup\.py|__init__\.py)$
+-   repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257.git
+    sha: f464d46624a959c6969ce6bcf2cd531cdeefb85a
+    hooks:
+    -   id: pep257
+        exclude: (^setup\.py|__init__\.py)$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks.git
     sha: v1.0.1
     hooks:

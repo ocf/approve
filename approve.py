@@ -83,7 +83,7 @@ def wait_for_task(celery, task):
 
 
 def get_group_information(group_oid):
-    """Returns tuple (group name, group oid, group email)."""
+    """Return tuple (group name, group oid, group email)."""
     if group_oid:
         group = group_by_oid(group_oid)
 
@@ -106,6 +106,7 @@ def get_group_information(group_oid):
 
 
 def make_account_request(account, password):
+    """Create an account request object for the new account."""
     request = NewAccountRequest(
         user_name=account['user_name'],
         real_name=account['group_name'],
@@ -135,7 +136,7 @@ def make_account_request(account, password):
 
 
 def create_account(request):
-    """Returns tuple (tasks queue, celery connection, task reponse)."""
+    """Return tuple (tasks queue, celery connection, task reponse)."""
     conf = ConfigParser()
     conf.read('/etc/ocf-create/ocf-create.conf')
 
@@ -167,6 +168,7 @@ def create_account(request):
 
 
 def error_report(request, new_request, response):
+    """Create and send an error report through ocflib."""
     print(bold(red('Error: Entered unexpected state.')))
     print(bold('An email has been sent to OCF staff'))
 
@@ -193,6 +195,7 @@ def error_report(request, new_request, response):
 
 
 def main():
+    """Run approval script interactively."""
     def pause_error_msg():
         input('Press enter to edit group information (or Ctrl-C to exit)...')
 

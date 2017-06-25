@@ -8,13 +8,10 @@ builddeb: autoversion
 	dpkg-buildpackage -us -uc
 
 .PHONY: package
-package: package_jessie package_stretch
+package: package_stretch
 
 .PHONY: package_%
 package_%: dist
-	# TODO: remove these once off jessie
-	cp debian/links.$* debian/links
-	cp debian/rules.$* debian/rules
 	docker run -e "DIST_UID=$(shell id -u)" -e "DIST_GID=$(shell id -g)" -v $(CURDIR):/mnt:rw "docker.ocf.berkeley.edu/theocf/debian:$*" /mnt/build-in-docker "$*"
 
 dist:

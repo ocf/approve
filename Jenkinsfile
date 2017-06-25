@@ -30,7 +30,7 @@ try {
     }
 
 
-    def dists = ['jessie', 'stretch']
+    def dists = ['stretch']
     for (def i = 0; i < dists.size(); i++) {
         def dist = dists[i]
         stage name: "build-${dist}"

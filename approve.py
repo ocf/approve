@@ -9,12 +9,12 @@ from textwrap import dedent
 import yaml
 from celery import Celery
 from Crypto.PublicKey import RSA
+from ocflib.account.creation import CREATE_PUBLIC_KEY
 from ocflib.account.creation import encrypt_password
 from ocflib.account.creation import NewAccountRequest
 from ocflib.account.submission import get_tasks
 from ocflib.account.submission import NewAccountResponse
 from ocflib.account.validators import validate_password
-from ocflib.constants import CREATE_PUBLIC_KEY
 from ocflib.misc.mail import send_problem_report
 from ocflib.misc.shell import bold
 from ocflib.misc.shell import edit_file

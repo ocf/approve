@@ -30,13 +30,9 @@ TEMPLATE = dedent(
     user_name: \n\
     group_name: {group_name}
     callink_oid: {callink_oid}
-    signatory: \n\
     email: {email}
 
     # Please ensure that:
-    #  * Person requesting account is signatory of group
-    #    - Look up the signatory's CalNet UID on directory.berkeley.edu
-    #    - Use `signat <uid>` to list groups they are a signatory for
     #  * Group does not have existing account (use checkacct)
     #  * Requested account name is based on group name
     #

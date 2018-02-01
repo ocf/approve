@@ -32,6 +32,7 @@ TEMPLATE = dedent(
     callink_oid: {callink_oid}
     signatory: \n\
     email: {email}
+    dry_run: FALSE
 
     # Please ensure that:
     #  * Person requesting account is signatory of group
@@ -39,7 +40,9 @@ TEMPLATE = dedent(
     #    - Use `signat <uid>` to list groups they are a signatory for
     #  * Group does not have existing account (use checkacct)
     #  * Requested account name is based on group name
-    #
+    # Also:
+    #   - The dry_run option when set to TRUE will not create any 
+    #       real accounts
     # vim: ft=yaml
     """
 )
@@ -221,7 +224,7 @@ def main():
             continue
 
         missing_key = False
-        for key in ['user_name', 'group_name', 'callink_oid', 'email']:
+        for key in ['user_name', 'group_name', 'callink_oid', 'email', 'dry_run']:
             if account.get(key) is None:
                 print('Missing value for key: ' + key)
                 missing_key = True
@@ -241,6 +244,11 @@ def main():
             print()
             pause_error_msg()
             continue
+       
+        if account.get('dry_run'):
+            print('Dry run completed successfully,')
+            print('no real accounts were created. Exiting...')
+            return
 
         request = make_account_request(account, password)
 

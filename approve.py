@@ -30,7 +30,6 @@ TEMPLATE = dedent(
     user_name: \n\
     group_name: {group_name}
     callink_oid: {callink_oid}
-    signatory: \n\
     email: {email}
 
     # Please ensure that:

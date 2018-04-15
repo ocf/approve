@@ -3,7 +3,7 @@
 	dh $@ --with python-virtualenv
 
 override_dh_virtualenv:
-	dh_virtualenv --python=/usr/bin/python3 --extra-pip-arg='--no-use-wheel'
+	dh_virtualenv --python=/usr/bin/python3 --extra-pip-arg='--no-binary=:all:'
 
 override_dh_auto_build:
 	@true

@@ -1,81 +1,86 @@
-if (env.BRANCH_NAME == 'master') {
-    properties([
-        pipelineTriggers([
-            upstream(
-                upstreamProjects: 'ocflib/master',
-                threshold: hudson.model.Result.SUCCESS,
-            ),
-        ]),
-    ])
+def dists = ['stretch']
+
+def parallelBuilds = dists.collectEntries { dist ->
+  [dist, {
+    stage("build-${dist}") {
+      sh 'make clean'
+      sh "make package_${dist}"
+      archiveArtifacts artifacts: "dist_${dist}/*"
+    }
+  }]
 }
 
 
-try {
-    node('slave') {
-        step([$class: 'WsCleanup'])
+pipeline {
+  // TODO: Make this cleaner: https://issues.jenkins-ci.org/browse/JENKINS-42643
+  triggers {
+    upstream(
+      upstreamProjects: (env.BRANCH_NAME == 'master' ? 'ocflib/master' : ''),
+      threshold: hudson.model.Result.SUCCESS,
+    )
+  }
 
-        stage('check-out-code') {
-            dir('src') {
-                checkout scm
+  agent {
+    label 'slave'
+  }
+
+  options {
+    ansiColor('xterm')
+    timeout(time: 1, unit: 'HOURS')
+  }
+
+  stages {
+    stage('check-gh-trust') {
+      steps {
+        checkGitHubAccess()
+      }
+    }
+
+    stage('test') {
+      steps {
+        sh 'make test'
+      }
+    }
+
+    stage('parallel-builds') {
+      steps {
+        script {
+          parallel parallelBuilds
+        }
+      }
+    }
+
+    // Upload packages in series instead of in parallel to avoid a race
+    // condition with a lock file on the package repo
+    stage('upload-packages') {
+      when {
+        branch 'master'
+      }
+      agent {
+        label 'deploy'
+      }
+      steps {
+        script {
+          for(dist in dists) {
+            stage("upload-${dist}") {
+              uploadChanges(dist, "dist_${dist}/*.changes")
             }
+          }
         }
-
-    	stage('test') {
-    		dir('src') {
-    			sh 'make test'
-    		}
-    	}
-
-        stash 'src'
+      }
     }
+  }
 
-
-    def dists = ['stretch']
-    for (def i = 0; i < dists.size(); i++) {
-        def dist = dists[i]
-        stage name: "build-${dist}"
-
-        node('slave') {
-            step([$class: 'WsCleanup'])
-            unstash 'src'
-
-            dir('src') {
-                sh 'make clean'
-                sh "make package_${dist}"
-                sh "mv dist dist_${dist}"
-                archiveArtifacts artifacts: "dist_${dist}/*"
-            }
-
-            stash 'src'
-        }
-
-        if (env.BRANCH_NAME == 'master') {
-            stage name: "upload-${dist}"
-
-            build job: 'upload-changes', parameters: [
-                [$class: 'StringParameterValue', name: 'path_to_changes', value: "dist_${dist}/*.changes"],
-                [$class: 'StringParameterValue', name: 'dist', value: dist],
-                [$class: 'StringParameterValue', name: 'job', value: env.JOB_NAME.replace('/', '/job/')],
-                [$class: 'StringParameterValue', name: 'job_build_number', value: env.BUILD_NUMBER],
-            ]
-        }
+  post {
+    failure {
+      emailNotification()
     }
-
-} catch (err) {
-    def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failure!"
-    def message = "${env.JOB_NAME} (#${env.BUILD_NUMBER}) failed: ${env.BUILD_URL}"
-
-    if (env.BRANCH_NAME == 'master') {
-        slackSend color: '#FF0000', message: message
-        mail to: 'root@ocf.berkeley.edu', subject: subject, body: message
-    } else {
-        mail to: emailextrecipients([
-            [$class: 'CulpritsRecipientProvider'],
-            [$class: 'DevelopersRecipientProvider']
-        ]), subject: subject, body: message
+    always {
+      node(label: 'slave') {
+        ircNotification()
+      }
     }
-
-    throw err
+  }
 }
 
 // vim: ft=groovy

@@ -1,5 +1,5 @@
 celery[redis]
 ocflib
 # ptyprocess 0.6.0 causes errors when installing and pip isn't new enough
-ptyprocess<=0.6.0
+ptyprocess<0.6.0
 pyyaml

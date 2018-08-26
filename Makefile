@@ -32,7 +32,7 @@ venv: autoversion vendor/venv-update requirements.txt requirements-dev.txt setup
 
 .PHONY: clean
 clean:
-	rm -rf debian/*.debhelper debian/*.log
+	rm -rf debian/*.debhelper debian/*.log dist dist_*
 
 .PHONY: update-requirements
 update-requirements: venv

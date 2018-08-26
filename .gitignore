@@ -14,4 +14,4 @@ debian/ocf-create.substvars
 debian/*.debhelper
 debian/changelog
 .version
-dist/
+dist*/

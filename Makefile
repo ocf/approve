@@ -27,7 +27,7 @@ autoversion:
 
 venv: autoversion vendor/venv-update requirements.txt requirements-dev.txt setup.py
 	vendor/venv-update \
-		venv= venv -ppython3 \
+		venv= venv -ppython3.7 \
 		install= -r requirements.txt -r requirements-dev.txt -e .
 
 .PHONY: clean

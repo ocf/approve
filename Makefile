@@ -1,7 +1,11 @@
 .PHONY: test
-test: autoversion venv
+test: autoversion venv mypy
 	venv/bin/pre-commit run --all-files
 	venv/bin/pre-commit install -f --install-hooks
+
+.PHONY: mypy
+mypy: venv
+	venv/bin/mypy approve.py
 
 .PHONY: builddeb
 builddeb: autoversion

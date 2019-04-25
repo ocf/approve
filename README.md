@@ -1,5 +1,6 @@
 # approve
 [![Build Status](https://jenkins.ocf.berkeley.edu/buildStatus/icon?job=approve/master)](https://jenkins.ocf.berkeley.edu/job/approve/job/master/)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 
 Script for creating group accounts.
 

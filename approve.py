@@ -228,6 +228,11 @@ def main():
             pause_error_msg()
             continue
 
+        if account['user_name'].startswith('cal'):
+            print('Username cannot start with "cal" due to university trademarks')
+            pause_error_msg()
+            continue
+
         try:
             password = prompt_for_new_password(
                 validator=lambda pwd: validate_password(

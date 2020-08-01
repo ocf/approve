@@ -1,5 +1,5 @@
 packagePipeline(
-    upstreamProjects: ['ocflib/master'],
+    upstreamProjects: ['ocf/ocflib/master'],
     dists: ['stretch'],
 )
 

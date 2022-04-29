@@ -23,7 +23,7 @@ dist:
 
 .PHONY: autoversion
 autoversion:
-	date +%Y.%m.%d.%H.%M-git`git rev-list -n1 HEAD | cut -b1-8` > .version
+	date +%Y.%m.%d.%H.%M-deb`lsb_release -rs`-git`git rev-list -n1 HEAD | cut -b1-8` > .version
 	rm -f debian/changelog
 	DEBFULLNAME="Open Computing Facility" DEBEMAIL="help@ocf.berkeley.edu" VISUAL=true \
 		dch -v `sed s/-/+/g .version` -D stable --no-force-save-on-release \

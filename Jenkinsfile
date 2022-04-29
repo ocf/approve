@@ -1,6 +1,6 @@
 packagePipeline(
     upstreamProjects: ['ocf/ocflib/master'],
-    dists: ['buster', 'bullseye'],
+    dists: ['bullseye', 'buster'],
 )
 
 // vim: ft=groovy
